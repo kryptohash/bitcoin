@@ -27,6 +27,9 @@ public:
     uint32_t nTime;
     uint32_t nBits;
     uint32_t nNonce;
+    int64_t blockHdrTime;
+    int64_t blockSize;
+    std::vector<uint8_t> blockSignature;
 
     CBlockHeader()
     {
@@ -43,6 +46,10 @@ public:
         nTime = 0;
         nBits = 0;
         nNonce = 0;
+        blockHdrTime = 0;
+        blockSize = 0;
+        blockSignature.resize(72);
+        blockSignature.clear();
     }
 
     bool IsNull() const
@@ -55,6 +62,21 @@ public:
     int64_t GetBlockTime() const
     {
         return (int64_t)nTime;
+    }
+
+    int64_t GetBlockHeaderTime() const
+    {
+        return (int64_t)blockHdrTime;
+    }
+
+    int64_t GetBlockSize() const
+    {
+        return (int64_t)blockSize;
+    }
+
+    std::vector<uint8_t> GetBlockSignature() const
+    {
+        return blockSignature;
     }
 };
 
@@ -101,6 +123,10 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        block.blockHdrTime   = blockHdrTime;
+        block.blockSize      = blockSize;
+        block.blockSignature.clear();
+        block.blockSignature.insert(block.blockSignature.end(), blockSignature.begin(), blockSignature.end());
         return block;
     }
 
